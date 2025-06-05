@@ -77,4 +77,57 @@ public class Main {
             try {
                 servicio.cambiarPassword("NuevoPass123");
                 System.out.println("✓ Contraseña cambiada exitosamente");
-            } catch (Exception
+            } catch (Exception e) {
+                System.out.println("✗ Error cambiando contraseña: " + e.getMessage());
+            }
+
+            // Intentar crear usuario (debe fallar)
+            try {
+                Usuario otroUsuario = new Usuario("5", "Test", "test@test.com", "Test123", new UsuarioRegular());
+                servicio.crearUsuario(otroUsuario);
+            } catch (SecurityException e) {
+                System.out.println("✓ Seguridad funcionando: " + e.getMessage());
+            }
+        }
+
+        System.out.println();
+
+        // === ESCENARIO 3: INVITADO ===
+        System.out.println("--- ESCENARIO 3: INVITADO ---");
+
+        // Cambiar a invitado
+        if (autenticacion.autenticar("guest@empresa.com", "Guest123")) {
+            System.out.println("✓ Invitado autenticado: " + servicio.verPerfil().getNombre());
+
+            // Verificar permisos muy limitados
+            System.out.println("Invitado puede acceder a public_content: " + servicio.puedeAcceder("public_content"));
+            System.out.println("Invitado puede acceder a admin_panel: " + servicio.puedeAcceder("admin_panel"));
+            System.out.println("Invitado puede acceder a user_management: " + servicio.puedeAcceder("user_management"));
+        }
+
+        System.out.println();
+
+        // === DEMOSTRACIÓN DE EXTENSIBILIDAD (OCP) ===
+        System.out.println("--- DEMOSTRACIÓN DE EXTENSIBILIDAD (OCP) ---");
+
+        // Cambiar a autenticación OAuth sin modificar código existente
+        IAutenticacion authOAuth = new AutenticacionOAuth(repositorio);
+        ServicioControlUsuarios servicioOAuth = new ServicioControlUsuarios(authOAuth, repositorio, validador);
+
+        // Simular autenticación OAuth
+        if (authOAuth.autenticar("admin@empresa.com", "oauth_token_123")) {
+            System.out.println("✓ Autenticación OAuth exitosa para: " + servicioOAuth.verPerfil().getNombre());
+            System.out.println("✓ Sistema funciona con diferentes tipos de autenticación (OCP)");
+        }
+
+        System.out.println();
+
+        // === RESUMEN DE PRINCIPIOS SOLID APLICADOS ===
+        System.out.println("=== PRINCIPIOS SOLID DEMOSTRADOS ===");
+        System.out.println("✓ SRP: Cada clase tiene una responsabilidad única");
+        System.out.println("✓ OCP: Sistema abierto para extensión, cerrado para modificación");
+        System.out.println("✓ LSP: Subclases son intercambiables sin romper funcionalidad");
+        System.out.println("✓ ISP: Interfaces específicas y cohesivas");
+        System.out.println("✓ DIP: Dependencias de abstracciones, no de concreciones");
+    }
+}
