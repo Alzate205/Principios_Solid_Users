@@ -1,0 +1,127 @@
+INSTRUCCIONES DE COMPILACIÓN Y EJECUCIÓN
+Paso 1: Crear la estructura de directorios
+bash# Desde la carpeta raíz de tu proyecto
+mkdir -p src/com/usuario/modelo
+mkdir -p src/com/usuario/modelo/roles
+mkdir -p src/com/usuario/interfaces
+mkdir -p src/com/usuario/implementaciones
+mkdir -p src/com/usuario/servicios
+mkdir -p src/com/usuario/principal
+Paso 2: Copiar cada archivo
+Copia cada código en su archivo correspondiente siguiendo la estructura mostrada arriba.
+Paso 3: Compilar el proyecto
+bash# Desde la carpeta raíz donde está la carpeta 'src'
+javac -cp src src/com/usuario/principal/Main.java -d bin
+Paso 4: Ejecutar el programa
+bash# Desde la carpeta raíz
+java -cp bin com.usuario.principal.Main
+ RESULTADOS ESPERADOS
+Al ejecutar el programa verás:
+=== SISTEMA DE CONTROL DE USUARIOS - PRINCIPIOS SOLID ===
+
+✓ Sistema configurado con inyección de dependencias (DIP)
+✓ Usuarios creados con diferentes roles (LSP)
+✓ Servicio principal creado
+
+--- ESCENARIO 1: ADMINISTRADOR ---
+✓ Administrador autenticado: Ana Admin
+✓ Moderador creado exitosamente
+Admin puede acceder a admin_panel: true
+Admin puede acceder a user_management: true
+
+--- ESCENARIO 2: USUARIO REGULAR ---
+✓ Usuario regular autenticado: Juan Usuario
+Usuario puede acceder a admin_panel: false
+Usuario puede acceder a public_content: true
+Password actualizada para: Juan Usuario
+✓ Contraseña cambiada exitosamente
+✓ Seguridad funcionando: Solo administradores pueden crear usuarios
+
+--- ESCENARIO 3: INVITADO ---
+✓ Invitado autenticado: Pedro Invitado
+Invitado puede acceder a public_content: true
+Invitado puede acceder a admin_panel: false
+Invitado puede acceder a user_management: false
+
+--- DEMOSTRACIÓN DE EXTENSIBILIDAD (OCP) ---
+✓ Autenticación OAuth exitosa para: Ana Admin
+✓ Sistema funciona con diferentes tipos de autenticación (OCP)
+
+=== PRINCIPIOS SOLID DEMOSTRADOS ===
+✓ SRP: Cada clase tiene una responsabilidad única
+✓ OCP: Sistema abierto para extensión, cerrado para modificación
+✓ LSP: Subclases son intercambiables sin romper funcionalidad
+✓ ISP: Interfaces específicas y cohesivas
+✓ DIP: Dependencias de abstracciones, no de concreciones
+
+CONCEPTOS CLAVE EXPLICADOS
+Líneas importantes explicadas:
+
+instanceof Administrador - Verifica el tipo específico del objeto en tiempo de ejecución
+throw new SecurityException() - Lanza una excepción de seguridad cuando no hay permisos
+stream().filter().findFirst().orElse(null) - Cadena de operaciones funcionales para buscar
+super("Administrador", 3) - Llama al constructor de la clase padre
+@Override - Indica que el método sobrescribe uno de la clase padre
+implements Interface - Declara que la clase implementa un contrato
+private/protected/public - Modificadores de acceso para encapsulación
+
+Patrones de diseño utilizados:
+
+Inyección de Dependencias - Para DIP
+Strategy Pattern - Para diferentes tipos de autenticación
+Template Method - En la clase abstracta Rol
+
+---------------------------------------------------------------------------------
+RESUMEN DE LA ESTRUCTURA COMPLETA:
+Archivos a crear (18 archivos en total):
+ Modelos (4 archivos):
+
+Usuario.java - Datos del usuario (SRP)
+Rol.java - Clase base abstracta (SRP + OCP + LSP)
+Administrador.java - Rol con permisos completos
+UsuarioRegular.java - Rol con permisos limitados
+Invitado.java - Rol con permisos mínimos
+Moderador.java - Nuevo rol (demuestra OCP)
+
+Interfaces (6 archivos):
+
+IAutenticacion.java - Contrato de autenticación (DIP)
+IRepositorioUsuario.java - Contrato de persistencia (DIP)
+IValidadorPassword.java - Contrato de validación (DIP)
+IOperacionesAdmin.java - Operaciones administrativas (ISP)
+IOperacionesUsuario.java - Operaciones de usuario (ISP)
+IOperacionesLectura.java - Operaciones de consulta (ISP)
+
+Implementaciones (4 archivos):
+
+RepositorioUsuarioMemoria.java - Persistencia en memoria
+ValidadorPasswordSeguro.java - Validación de contraseñas
+AutenticacionBasica.java - Autenticación email/password
+AutenticacionOAuth.java - Autenticación con tokens (OCP)
+
+ Servicios (1 archivo):
+
+ServicioControlUsuarios.java - Coordinador principal (DIP + ISP + SRP)
+
+Principal (1 archivo):
+
+Main.java - Demostración completa del sistema
+
+CARACTERÍSTICAS DESTACADAS DEL CÓDIGO:
+
+Comentarios exhaustivos - Cada línea importante está explicada
+Principios SOLID claramente marcados - Se indica qué principio aplica cada parte
+Manejo de excepciones - Sistema robusto con validaciones
+Extensibilidad demostrada - Nuevos roles y autenticación sin modificar código
+Segregación de interfaces - Cada rol accede solo a lo que necesita
+Inyección de dependencias - Sistema testeable y flexible
+
+CONCEPTOS JAVA UTILIZADOS:
+
+Herencia y polimorfismo
+Interfaces y clases abstractas
+Manejo de excepciones
+Collections (Map, Stream API)
+Expresiones regulares
+Operadores lógicos
+Modificadores de acceso
